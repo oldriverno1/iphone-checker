@@ -1,5 +1,6 @@
 import {AppController} from './app-controller';
 import * as dotenv from 'dotenv';
+import logger from './logger';
 
 dotenv.config();
 const app = new AppController();
@@ -9,14 +10,14 @@ const URL =
 const EMAIL = process.env.RECEIVER || '';
 
 const checkAvailability = () => {
-  console.log('Checking availability...');
+  logger.info('Checking availability...');
   app
     .checkAndNotify(URL, EMAIL)
     .then(() => {
-      console.log('Check completed.');
+      logger.info('Check completed.');
     })
     .catch(error => {
-      console.error('An error occurred:', error);
+      logger.error('An error occurred:', error);
     });
 };
 
