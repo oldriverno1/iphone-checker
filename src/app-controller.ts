@@ -2,6 +2,7 @@ import {IHttpClient, HttpClient} from './http-client';
 import {IResponseParser, ResponseParser} from './response-parser';
 import {IEmailNotifier, EmailNotifier} from './email-notifier';
 import {QueryResponse} from './interface';
+import logger from './logger';
 
 export class AppController {
   private httpClient: IHttpClient;
@@ -21,6 +22,7 @@ export class AppController {
   async checkAndNotify(url: string, email: string): Promise<void> {
     const data = await this.httpClient.get<QueryResponse>(url);
     if (this.responseParser.isIphoneAvailable(data)) {
+      logger.info('iPhone is available!');
       await this.emailNotifier.sendNotification(
         email,
         `iPhone is available near your store!,
@@ -28,6 +30,7 @@ export class AppController {
          please check the link:
          https://www.apple.com/tw/shop/buy-iphone/iphone-15-pro/6.7-%E5%90%8B%E9%A1%AF%E7%A4%BA%E5%99%A8-256gb-%E5%8E%9F%E8%89%B2%E9%88%A6%E9%87%91%E5%B1%AC`
       );
+      logger.info('Email sent successfully!');
     }
   }
 }
